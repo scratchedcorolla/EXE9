@@ -155,9 +155,9 @@ This includes circumstances when the original source code is changed, edited, or
 
 
 
--EXE9 can take up to 30 seconds from pressing open to the program actually starting. This is due to the fact that it needs to start all the libraries and compiling scripts in the background. DO NOT SPAM OPEN - IT WILL OPEN VERY MANY COPIES AND USE A LOT OF RESORCES, COULD CAUSE UNEXPECTED CRASHES AND DAMAGE
+-EXE9 can take up to 30 seconds from pressing open to the program actually starting. This is due to the fact that it needs to start all the libraries and compiling scripts in the background. DO NOT SPAM OPEN - THIS WILL CAUSE EXE9 TO OPEN COPIES OF ITSELF AND COULD CAUSE CRASHING OR SYSTEM DAMAGE
 
--Due to lack of publisher's certificate, as of the last README update, sometimes your operating system will show a warning when you try to run, or your browser may block the download. Downloading the .zip version of EXE9 from the GitHub (dist folder) can be very effective at mitigating browser blockage.
+-Due to a lack of code signing certificate, as of the last README update, sometimes your operating system will show a warning when you try to run, or your browser may block the download. Downloading the .zip version of EXE9 from the GitHub (/dist/EXE9 vX.X.X folder) can be very effective at mitigating browser blockage.
 
 
 
