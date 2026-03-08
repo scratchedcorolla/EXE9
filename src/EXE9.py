@@ -1,4 +1,3 @@
-import ctypes
 import tkinter as tk
 from tkinter import filedialog
 from tkinterdnd2 import DND_FILES, TkinterDnD
@@ -10,15 +9,17 @@ import platform
 import threading
 
 # -----------------------------
-# DPI FIX (prevents blurry UI)
+# DPI FIX (Windows only)
 # -----------------------------
-try:
-    ctypes.windll.shcore.SetProcessDpiAwareness(1)
-except:
+if platform.system() == "Windows":
     try:
-        ctypes.windll.user32.SetProcessDPIAware()
+        import ctypes
+        ctypes.windll.shcore.SetProcessDpiAwareness(1)
     except:
-        pass
+        try:
+            ctypes.windll.user32.SetProcessDPIAware()
+        except:
+            pass
 
 
 # -----------------------------
@@ -32,19 +33,31 @@ except:
 
 
 # =========================================================
+# ===================== RESOURCE PATH =====================
+# =========================================================
+
+def resource_path(relative):
+    """Resolve path to a bundled resource, works both frozen and in dev."""
+    base = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base, relative)
+
+
+# =========================================================
 # ====================== CONFIG ===========================
 # =========================================================
 
 APP_TITLE = "EXE9 Universal Compiler"
 WINDOW_GEOMETRY = "900x840"
 
-LOGO_IMAGE_PATH = r"D:\EXE9\misc\exe9transparent.png"
+LOGO_IMAGE_PATH = resource_path("exe9transparent.png")
 LOGO_MAX_HEIGHT = 130
 
-DND_IMAGE_PATH = r"D:\EXE9\misc\draganddrop.png"
+DND_IMAGE_PATH = resource_path("draganddrop.png")
 DND_IMAGE_MAX_HEIGHT = 100
 
 DND_ZONE_HEIGHT = 160
+
+ICON_PATH = resource_path("appicon.ico")  # Window + taskbar icon
 
 BG_COLOR = "#001130"
 FG_COLOR = "#39C49F"
@@ -82,12 +95,12 @@ FONT_LOG = ("Consolas", FONT_SIZE_LOG)
 LOG_HEIGHT = 12
 
 PLACEHOLDER_SCRIPT_TEXT = "Drag & drop a Python file here or click Browse"
-PLACEHOLDER_ICON_TEXT = "Optional: Select an application icon file (.ico)"
-PLACEHOLDER_DATA_TEXT = "Optional: Select a data file or folder"
+PLACEHOLDER_ICON_TEXT = "Optional: Select an icon file (.ico / .icns / .png)"
+PLACEHOLDER_DATA_TEXT = "No data files selected"
 
 INITIAL_LOG_MESSAGE = "--- Ready to Compile ---"
-FOOTER_MESSAGE = "Output EXE will be in the script's 'dist' folder."
-SIGNATURE = "Build and Design by scratched corolla LLC & Milo Pesqueira - DO NOT DISTRIBUTE"
+FOOTER_MESSAGE = "Output will be in the script's 'dist' folder."
+SIGNATURE = "Build and Design by Milo Pesqueira - DO NOT DISTRIBUTE - More info on exe9.org"
 
 
 # =========================================================
@@ -142,6 +155,22 @@ class CompilerApp:
         master.title(APP_TITLE)
         master.geometry(WINDOW_GEOMETRY)
         master.configure(bg=BG_COLOR)
+
+        # ── Window / taskbar icon ──────────────────────────
+        _sys = platform.system()
+        if _sys == "Windows" and os.path.exists(ICON_PATH):
+            try:
+                master.iconbitmap(ICON_PATH)
+            except Exception:
+                pass
+        elif _sys in ("Darwin", "Linux"):
+            _png_icon = resource_path("appicon.png")
+            if os.path.exists(_png_icon):
+                try:
+                    _icon_img = tk.PhotoImage(file=_png_icon)
+                    master.iconphoto(True, _icon_img)
+                except Exception:
+                    pass
 
         self.script_path = tk.StringVar(value=PLACEHOLDER_SCRIPT_TEXT)
         self.icon_path = tk.StringVar(value=PLACEHOLDER_ICON_TEXT)
@@ -210,7 +239,7 @@ class CompilerApp:
 
         compile_btn = tk.Button(
             self.master,
-            text="Generate EXE9",
+            text="Generate EXE9" if platform.system() == "Windows" else ("Generate .app" if platform.system() == "Darwin" else "Generate Binary"),
             command=self.compile_thread,
             bg=BUTTON_COLOR,
             fg=BUTTON_TEXT_COLOR,
@@ -405,35 +434,50 @@ class CompilerApp:
 
     def create_data_row(self, frame):
 
-        tk.Label(frame, text="Extra Data File", bg=BG_COLOR, fg=LABEL_COLOR, font=FONT_LABEL)\
-            .grid(row=2, column=0, sticky="w")
+        tk.Label(frame, text="Extra Data Files", bg=BG_COLOR, fg=LABEL_COLOR, font=FONT_LABEL)\
+            .grid(row=2, column=0, sticky="nw", pady=(8, 0))
 
-        self.data_box = PlaceholderEntry(
+        # Listbox container
+        list_frame = tk.Frame(
             frame,
-            placeholder=PLACEHOLDER_DATA_TEXT,
             bg=INPUT_BG_COLOR,
-            fg=INPUT_TEXT_COLOR,
-            font=FONT_ENTRY,
-            bd=0,
             highlightthickness=1,
             highlightbackground=INPUT_BORDER_COLOR
         )
-        self.data_box.grid(row=2, column=1, padx=10, pady=5, sticky="ew")
+        list_frame.grid(row=2, column=1, padx=10, pady=5, sticky="ew")
+
+        self.data_listbox = tk.Listbox(
+            list_frame,
+            bg=INPUT_BG_COLOR,
+            fg=INPUT_TEXT_COLOR,
+            font=FONT_ENTRY,
+            selectbackground="#1a3a6a",
+            selectforeground=INPUT_TEXT_COLOR,
+            borderwidth=0,
+            highlightthickness=0,
+            height=4,
+            activestyle="none"
+        )
+        self.data_listbox.pack(fill="both", expand=True, padx=4, pady=4)
+
+        # Placeholder text item
+        self.data_listbox.insert(tk.END, PLACEHOLDER_DATA_TEXT)
+        self.data_listbox.config(fg="grey")
 
         btn_col = tk.Frame(frame, bg=BG_COLOR)
-        btn_col.grid(row=2, column=2)
+        btn_col.grid(row=2, column=2, sticky="n", pady=(8, 0))
 
         tk.Button(
             btn_col,
-            text="Browse",
+            text="Add",
             command=self.select_data,
             bg=BUTTON_COLOR,
             fg=BUTTON_TEXT_COLOR,
             font=FONT_BUTTON,
             bd=0
-        ).pack(side="left")
+        ).pack(fill="x")
 
-        self._make_clear_btn(btn_col, self.data_box.reset).pack(side="left", padx=(4, 0))
+        self._make_clear_btn(btn_col, self.clear_data_files).pack(fill="x", pady=(4, 0))
 
     # -----------------------------------------------------
 
@@ -470,18 +514,35 @@ class CompilerApp:
             self._set_script_path(path)
 
     def select_icon(self):
-        path = filedialog.askopenfilename(filetypes=[("Icon Files", "*.ico")])
+        _sys = platform.system()
+        if _sys == "Darwin":
+            filetypes = [("Icon Files", "*.icns"), ("PNG Images", "*.png"), ("All Files", "*.*")]
+        elif _sys == "Linux":
+            filetypes = [("PNG Images", "*.png"), ("Icon Files", "*.ico"), ("All Files", "*.*")]
+        else:
+            filetypes = [("Icon Files", "*.ico"), ("All Files", "*.*")]
+        path = filedialog.askopenfilename(filetypes=filetypes)
         if path:
             self.icon_box.delete(0, tk.END)
             self.icon_box.insert(0, path)
 
     def select_data(self):
-        path = filedialog.askopenfilename()
-        if not path:
-            path = filedialog.askdirectory()
-        if path:
-            self.data_box.delete(0, tk.END)
-            self.data_box.insert(0, path)
+        paths = filedialog.askopenfilenames(title="Select data files to bundle")
+        if paths:
+            # Remove placeholder if still showing
+            if self.data_listbox.size() == 1 and self.data_listbox.get(0) == PLACEHOLDER_DATA_TEXT:
+                self.data_listbox.delete(0)
+                self.data_listbox.config(fg=INPUT_TEXT_COLOR)
+            for p in paths:
+                # Avoid duplicates
+                existing = list(self.data_listbox.get(0, tk.END))
+                if p not in existing:
+                    self.data_listbox.insert(tk.END, p)
+
+    def clear_data_files(self):
+        self.data_listbox.delete(0, tk.END)
+        self.data_listbox.insert(tk.END, PLACEHOLDER_DATA_TEXT)
+        self.data_listbox.config(fg="grey")
 
     # -----------------------------------------------------
 
@@ -523,17 +584,24 @@ class CompilerApp:
         ]
 
         icon = self.icon_box.get_real_value()
-        if os.path.exists(icon) and icon.endswith(".ico"):
+        _sys = platform.system()
+        valid_icon_exts = {
+            "Windows": (".ico",),
+            "Darwin":  (".icns", ".png"),
+            "Linux":   (".png", ".ico"),
+        }.get(_sys, (".ico",))
+        if os.path.exists(icon) and icon.lower().endswith(valid_icon_exts):
             command.extend(["--icon", icon])
 
-        data = self.data_box.get_real_value()
-        if os.path.exists(data):
-            name = os.path.basename(data)
-            if os.path.isdir(data):
-                data_arg = f"{data}{os.pathsep}{name}"
-            else:
-                data_arg = f"{data}{os.pathsep}."
-            command.extend(["--add-data", data_arg])
+        data_files = list(self.data_listbox.get(0, tk.END))
+        if data_files and data_files[0] != PLACEHOLDER_DATA_TEXT:
+            for data in data_files:
+                if os.path.exists(data):
+                    if os.path.isdir(data):
+                        data_arg = f"{data}{os.pathsep}{os.path.basename(data)}"
+                    else:
+                        data_arg = f"{data}{os.pathsep}."
+                    command.extend(["--add-data", data_arg])
 
         command.append(script)
 
@@ -569,8 +637,15 @@ class CompilerApp:
 
             if process.returncode == 0:
                 self._set_progress(100, "Complete!")
-                self.update_log("\nSUCCESS: EXE Created")
-                self.update_log(f"Check: {os.path.dirname(script)}\\dist")
+                _sys = platform.system()
+                if _sys == "Darwin":
+                    self.update_log("\nSUCCESS: .app bundle created!")
+                elif _sys == "Linux":
+                    self.update_log("\nSUCCESS: Binary created!")
+                else:
+                    self.update_log("\nSUCCESS: EXE Created")
+                dist_path = os.path.join(os.path.dirname(script), "dist")
+                self.update_log(f"Check: {dist_path}")
             else:
                 self._set_progress(0, "Compilation failed.")
                 self.update_log("\nCompilation failed.")
