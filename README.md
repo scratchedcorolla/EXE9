@@ -13,6 +13,7 @@
 * ##### Source Code Editing
 * ##### File Structure
 * ##### Legal
+* ##### Notes (DO NOT IGNORE)
 
 
 
@@ -146,7 +147,22 @@ Under the Copyright Act of 1976, it is illegal to reproduce, distribute, or make
 
 This includes circumstances when the original source code is changed, edited, or revised by another party.
 
-Violation of any terms stated here or during request of distribution will result in legal action and prosecution.
+### 
+
+### **Notes**
+
+##### ==================
+
+
+
+-EXE9 can take up to 30 seconds from pressing open to the program actually starting. This is due to the fact that it needs to start all the libraries and compiling scripts in the background. DO NOT SPAM OPEN - IT WILL OPEN VERY MANY COPIES AND USE A LOT OF RESORCES, COULD CAUSE UNEXPECTED CRASHES AND DAMAGE
+
+-Due to lack of publisher's certificate, as of the last README update, sometimes your operating system will show a warning when you try to run, or your browser may block the download. Downloading the .zip version of EXE9 from the GitHub (dist folder) can be very effective at mitigating browser blockage.
+
+
+
+
+
 
 
 
