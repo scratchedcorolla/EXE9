@@ -1,7 +1,7 @@
 # **EXE9 OFFICIAL GITHUB REPOSITORY**
 
-Source Code, Info, and General Recourses regarding the EXE9 Universal Compiler.
-
+**Source Code, Info, and General Recourses regarding the EXE9 Universal Compiler.**
+> This README.md was last updated on: 3/7/2026 - when the latest released version of EXE9 was v1.0.0
 
 
 ### **Table Of Contents**
@@ -44,15 +44,13 @@ Source Code, Info, and General Recourses regarding the EXE9 Universal Compiler.
 
 
 
-**Developed By:		With A Special Thanks to:**
+**Developed By:**	Milo Pesqueira
 
-**Milo Pesqueira		David Cortesi, Giovanni Bajo, and William Caban**
+**With A Special Thanks to:**		David Cortesi, Giovanni Bajo, and William Caban 
 
-&nbsp;			for creating \\\& developing PyInstaller, the heart of EXE9.
+for creating & developing PyInstaller, the heart of EXE9.
 
 
-
-> This README.md was last updated on: 3/7/2026 - when the latest released version of EXE9 was v1.0.0
 
 
 
@@ -93,9 +91,7 @@ All of the app's main scripture is in one file, called EXE9.py, and all of the s
 Feel free to edit whatever and use whatever method of editing you choose! The possibilities are endless!
 
 Near the top of the main script, there is a config section. This section works by assigning variables to different properties of different elements, this way, it only takes less than 30 seconds and only a few clicks to change
-
 whatever styling you want! For instance, to change the background color to red, you would find the variable in the config menu for the background color, (which, in the main script, is "BG\_COLOR") and you would change the value
-
 from the default "#001130", (which is a dark navy blue) to "#FF0000" (which is pure red).
 
 
@@ -131,8 +127,6 @@ from the default "#001130", (which is a dark navy blue) to "#FF0000" (which is p
 ### **Legal**
 
 ##### ==================
-
-> This README.md was last updated on: 3/7/2026 - when the latest released version of EXE9 was v1.0.0
 
 
 
