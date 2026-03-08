@@ -101,7 +101,7 @@ from the default "#001130", (which is a dark navy blue) to "#FF0000" (which is p
 
 ##### ==================
 
-**This is the basic file structure of the source code of EXE9. Please note that, as of 3/7/2026 (Release v1.0.0), EXE9 is distributed in a single .exe file, so the main distribution has no *real* file structure.**
+**This is the basic file structure of the source code of EXE9. Please note that, as of 3/8/2026 (Latest Release v1.1.0), You can find the .exe, .app, and Linux binary of EXE9 in the releases on GitHub or on [our website's download page](https://exe9.org/download/). .zip and .tar.gz versions of each release are availible in the releases on GitHub.**
 
 
 
@@ -109,11 +109,11 @@ from the default "#001130", (which is a dark navy blue) to "#FF0000" (which is p
 
 
 
-**dist, misc, src**
+**".github", "build", "misc"**
 
 
 
-**dist is the main distribution folder. This contains another folder called "EXE9 vX.X.X" that has an "assets" folder (with logos, icons, and other images) and "EXE9\_vX.X.X.exe" + the same but .zip, the actual EXE9 program.**
+**".github" contains the folder: "workflows". No files natively live in the ".github" folder. the "workflows" folder contains "build.yaml". The script used for building, compiling, and pushing releases.**
 
 
 
@@ -121,7 +121,7 @@ from the default "#001130", (which is a dark navy blue) to "#FF0000" (which is p
 
 
 
-**src contains the source code of EXE9, as one python file: "EXE9.py"**
+**"build" contains a copy of the latest release's source code, along with any files needed for EXE9 to run independently, such as logos and icons.**
 
 ### 
 
