@@ -13,7 +13,7 @@
 * ##### Source Code Editing
 * ##### File Structure
 * ##### Legal
-* ##### Notes (DO NOT IGNORE)
+* ##### Notes (<-- READ THIS - DO NOT IGNORE)
 
 
 
