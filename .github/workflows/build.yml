@@ -1,0 +1,100 @@
+name: Build EXE9
+
+on:
+  push:
+    tags:
+      - 'v*'          # Triggers on any tag like v1.0.0, v1.1.0b, etc.
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            label: windows
+            output_name: EXE9.exe
+            dist_path: build/dist/EXE9.exe
+
+          - os: macos-latest
+            label: macos
+            output_name: EXE9.app
+            dist_path: build/dist/EXE9.app
+
+          - os: ubuntu-latest
+            label: linux
+            output_name: EXE9
+            dist_path: build/dist/EXE9
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install pyinstaller pillow
+
+      - name: Install tkinterdnd2
+        run: pip install tkinterdnd2
+
+      - name: Install Linux display dependencies
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-tk tk-dev
+
+      - name: Build with PyInstaller
+        working-directory: build
+        run: |
+          pyinstaller \
+            --onefile \
+            --clean \
+            --noconfirm \
+            --windowed \
+            --name EXE9 \
+            --icon appicon.ico \
+            --add-data "exe9transparent.png${{ matrix.os == 'windows-latest' && ';.' || ':.' }}" \
+            --add-data "draganddrop.png${{ matrix.os == 'windows-latest' && ';.' || ':.' }}" \
+            --add-data "appicon.ico${{ matrix.os == 'windows-latest' && ';.' || ':.' }}" \
+            --add-data "appicon.png${{ matrix.os == 'windows-latest' && ';.' || ':.' }}" \
+            EXE9.py
+        shell: bash
+
+      - name: Zip .app bundle (macOS only)
+        if: matrix.os == 'macos-latest'
+        run: zip -r build/dist/EXE9.app.zip build/dist/EXE9.app
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: EXE9-${{ matrix.label }}
+          path: |
+            ${{ matrix.os == 'macos-latest' && 'build/dist/EXE9.app.zip' || matrix.dist_path }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Create GitHub Release and attach binaries
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            artifacts/EXE9-windows/EXE9.exe
+            artifacts/EXE9-macos/EXE9.app.zip
+            artifacts/EXE9-linux/EXE9
