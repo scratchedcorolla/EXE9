@@ -113,7 +113,7 @@ from the default "#001130", (which is a dark navy blue) to "#FF0000" (which is p
 
 
 
-**dist is the main distribution folder. This contains another folder called "EXE9 vX.X.X" that has an "assets" folder (with logos, icons, and other images) and "EXE9\_vX.X.X.exe", the actual EXE9 program.**
+**dist is the main distribution folder. This contains another folder called "EXE9 vX.X.X" that has an "assets" folder (with logos, icons, and other images) and "EXE9\_vX.X.X.exe" + the same but .zip, the actual EXE9 program.**
 
 
 
