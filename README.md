@@ -1,7 +1,9 @@
 # **EXE9 OFFICIAL GITHUB REPOSITORY**
 
 **Source Code, Info, and General Recourses regarding the EXE9 Universal Compiler.**
+
 > This README.md was last updated on: 3/7/2026 - when the latest released version of EXE9 was v1.0.0
+
 
 
 ### **Table Of Contents**
@@ -10,6 +12,7 @@
 
 * ##### About/What is it?
 * ##### Regular Usage
+* ##### SEALit9
 * ##### Source Code Editing
 * ##### File Structure
 * ##### Legal
@@ -47,9 +50,9 @@
 
 **Developed By:**	Milo Pesqueira
 
-**With A Special Thanks to:**		David Cortesi, Giovanni Bajo, and William Caban 
+**With A Special Thanks to:**		David Cortesi, Giovanni Bajo, and William Caban
 
-for creating & developing PyInstaller, the heart of EXE9.
+for creating \& developing PyInstaller, the heart of EXE9.
 
 
 
@@ -81,6 +84,16 @@ NOTE: Press the "Clear" button next to each file upload zone to clear it. Now th
 
 
 
+### **SEALit9**
+
+##### ==================
+
+###### **SEALit9 is a service within EXE9 that allows you to easily digitally sign your deployments with the click of a button.**
+
+To access SEALit9, go to the "SEALit9" tab on EXE9. Choose weather you want to sign you deployment with an official certificate, or if you want to self-sign without a certificate. When self-signing, you simply upload your executable and enter what title you want to sign under. **NOTE: Self-Signing will not mitigate "unknown publisher" warnings when running your program. Self-Signing is merely for crediting the developer/creator.** If you choose to sign with a certificate, you must upload your executable, your official certificate file (.pfx) and your certificate password.
+
+
+
 ### **Source Code Editing**
 
 ##### ==================
@@ -101,7 +114,7 @@ from the default "#001130", (which is a dark navy blue) to "#FF0000" (which is p
 
 ##### ==================
 
-**This is the basic file structure of the source code of EXE9. Please note that, as of 3/8/2026 (Latest Release v1.1.0), You can find the .exe, .app, and Linux binary of EXE9 in the releases on GitHub or on [our website's download page](https://exe9.org/download/). .zip and .tar.gz versions of each release are availible in the releases on GitHub.**
+**This is the basic file structure of the source code of EXE9. Please note that, as of 3/8/2026 (Latest Release v1.1.0), You can find the .exe, .app, and Linux binary of EXE9 in the releases on GitHub or on** [**our website's download page**](https://exe9.org/download/)**. .zip and .tar.gz versions of each release are availible in the releases on GitHub.**
 
 
 
@@ -147,6 +160,10 @@ Under the Copyright Act of 1976, it is illegal to reproduce, distribute, or make
 
 This includes circumstances when the original source code is changed, edited, or revised by another party.
 
+
+
+EXE9 and SEALit9 does NOT store ANY user information permanently. This includes but is not limited to: compile outputs, scripts, certificates or certificate details, certificate passwords, etc. EXE9 is a purely local program and does not require any internet connection to operate.
+
 ### 
 
 ### **Notes**
@@ -158,11 +175,4 @@ This includes circumstances when the original source code is changed, edited, or
 -EXE9 can take up to 30 seconds from pressing open to the program actually starting. This is due to the fact that it needs to start all the libraries and compiling scripts in the background. DO NOT SPAM OPEN - THIS WILL CAUSE EXE9 TO OPEN COPIES OF ITSELF AND COULD CAUSE CRASHING OR SYSTEM DAMAGE
 
 -Due to a lack of code signing certificate, as of the last README update, sometimes your operating system will show a warning when you try to run, or your browser may block the download. Downloading the .zip version of EXE9 from the GitHub (/dist/EXE9 vX.X.X folder) can be very effective at mitigating browser blockage.
-
-
-
-
-
-
-
 
