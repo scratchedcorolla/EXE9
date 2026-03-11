@@ -2,7 +2,7 @@
 
 **Source Code, Info, and General Recourses regarding the EXE9 Universal Compiler.**
 
-> This README.md was last updated on: 3/7/2026 - when the latest released version of EXE9 was v1.0.0
+> This README.md was last updated on: 3/10/2026 - when the latest released version of EXE9 was v1.2.2
 
 
 
